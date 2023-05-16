@@ -27,7 +27,7 @@ class Net(nn.Module):
         """
         super(Net, self).__init__()
         self.num_channels = params.num_channels
-        
+
         # each of the convolution layers below have the arguments (input_channels, output_channels, filter_size,
         # stride, padding). We also include batch normalisation layers that help stabilise training.
         # For more details on how to use these layers, check out the documentation.
@@ -69,7 +69,7 @@ class Net(nn.Module):
         s = s.view(-1, 4*4*self.num_channels*4)             # batch_size x 4*4*num_channels*4
 
         # apply 2 fully connected layers with dropout
-        s = F.dropout(F.relu(self.fcbn1(self.fc1(s))), 
+        s = F.dropout(F.relu(self.fcbn1(self.fc1(s))),
             p=self.dropout_rate, training=self.training)    # batch_size x self.num_channels*4
         s = self.fc2(s)                                     # batch_size x 10
 

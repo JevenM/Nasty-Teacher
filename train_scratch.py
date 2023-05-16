@@ -29,6 +29,7 @@ torch.backends.cudnn.benchmark = False
 parser = argparse.ArgumentParser()
 parser.add_argument('--save_path', default='experiments/CIFAR10/baseline/resnet18', type=str)
 parser.add_argument('--resume', default=None, type=str)
+# '+'表示参数可以接受一个或多个值，并将它们作为列表返回。至少需要提供一个值。例如，--gpu_id 0 1 2将返回[0, 1, 2]。
 parser.add_argument('--gpu_id', default=[0], type=int, nargs='+', help='id(s) for CUDA_VISIBLE_DEVICES')
 args = parser.parse_args()
 
@@ -152,9 +153,10 @@ if __name__ == "__main__":
     # #################### Load the parameters from json file #####################################
     json_path = os.path.join(args.save_path, 'params.json')
     assert os.path.isfile(json_path), "No json configuration file found at {}".format(json_path)
+    # default num_workers from the paper is 4, set it to 0 for my laptop
     params = Params(json_path)
 
-    params.cuda = torch.cuda.is_available() # use GPU if available
+    params.cuda = torch.cuda.is_available()  # use GPU if available
 
     for k, v in params.__dict__.items():
         logging.info('{}:{}'.format(k, v))
